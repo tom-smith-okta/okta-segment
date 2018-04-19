@@ -1,6 +1,17 @@
 {
+  "name": "okta-segment.io",
+  "version": "1.0.0",
+  "description": "integrating segment into the Okta widget",
+  "main": "app.js",
   "dependencies": {
     "dotenv": "^5.0.1",
     "express": "^4.16.3"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Tom Smith",
+  "engines": {
+    "node": "6.11.3"
   }
 }
