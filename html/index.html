@@ -8,7 +8,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Okta Registration with Identity Proofing</title>
+	<title>Okta + Segment integration</title>
 
 	<!-- CSS -->
 
@@ -129,7 +129,43 @@ window.onload = function() {
 		if (res.status === 'ACTIVE') {
 			console.log("there is an okta session")
 
-			setWelcome()
+			console.dir(res)
+
+			setWelcome(res.login)
+
+			// analytics.identify(
+			// 	localStorage.userID,
+			// 	{
+			// 		name: localStorage.name,
+			// 		email: localStorage.email
+			// 	},
+			// 	{ 
+			// 		integrations: {
+			// 			'Salesforce': true
+			// 	}
+			// })
+
+analytics.identify('1234554321', {
+  name: 'Peter Gibbons',
+  title: 'VP of Derp',
+  email: 'peter.gibbons@initech.com',
+  company: {id: 666, name: 'Initech'},
+  phone: '570-690-4150',
+  state: 'California',
+  rating: 'Hot',
+  address: {
+    city: 'east greenwich',
+    postalCode: '94115',
+    country: 'USA',
+    street: '19123 forest lane',
+    state: 'RI'
+  }
+}, { 
+  'integrations':{
+    'Salesforce': true
+  }
+});
+
 		}
 	  // No session, or error retrieving the session. Render the Sign-In Widget.
 	  else if (res.status === 'INACTIVE') {
@@ -153,14 +189,62 @@ window.onload = function() {
 
           //           }, "json")
 				}
-				localStorage.setItem("given_name", res.claims.given_name)
+				// localStorage.setItem("given_name", res.claims.given_name)
 
 				console.log("the id_token is: " + res.idToken)
 				console.dir(res)
 
-				setWelcome()
-	      	}
-	      },
+				setWelcome(res.claims.given_name)
+
+				localStorage.setItem("userID", res.claims.sub)
+				localStorage.setItem("name", res.claims.given_name + " " + res.claims.family_name)
+				localStorage.setItem("email", res.claims.preferred_username)
+
+				// analytics.identify(res.claims.sub, {
+				// 	name: res.claims.given_name + " " + res.claims.family_name,
+				// 	email: res.claims.preferred_username
+				// })
+
+				// analytics.identify(localStorage.userID, {
+				// 	name: localStorage.name,
+				// 	email: localStorage.email
+				// })
+				// analytics.identify(
+				// 	localStorage.userID,
+				// 	{
+				// 		name: localStorage.name,
+				// 		email: localStorage.email
+				// 	},
+				// 	{ 
+				// 		integrations: {
+				// 			'Salesforce': true
+				// 	}
+				// })
+
+analytics.identify('1234554321', {
+  name: 'Peter Gibbons',
+  title: 'VP of Derp',
+  email: 'peter.gibbons@initech.com',
+  company: {id: 666, name: 'Initech'},
+  phone: '570-690-4150',
+  state: 'California',
+  rating: 'Hot',
+  address: {
+    city: 'east greenwich',
+    postalCode: '94115',
+    country: 'USA',
+    street: '19123 forest lane',
+    state: 'RI'
+  }
+}, { 
+  'integrations':{
+    'Salesforce': true
+  }
+});
+
+
+			}
+		},
 	      function error(err) {
 	      	console.log("there was an error: " + err)
 	        // handleError(err)
@@ -170,15 +254,17 @@ window.onload = function() {
 	})
 }
 
-function setWelcome() {
+function setWelcome(given_name) {
 
-	var msg = "<h4>Welcome to Consumer Bank, " + localStorage.getItem("given_name") + "!</h4>"
+// alert("hi user!!")
+	var msg = "<h4>Welcome to Consumer Bank, " + given_name + "!</h4>"
 	msg += "<p>To start your line of credit, you can stop by one of our branches.</p>"
 	msg += "<p>Or, you can get a $500 line of credit immediately by clicking <a href = 'dlduplexfacialmatch.htm'>here</a>.</p>"
 
 	$("#userMsg").html(msg)
 	$("#loginLink").hide()
 	$("#signoutLink").show()
+
 }
 
 function showWidget() {
