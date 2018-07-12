@@ -1,0 +1,67 @@
+	// // SEGMENT: Display the anonymous id and known user id
+	// analytics.ready(function() {
+	// 	var user = analytics.user();
+	// 	var id = user.id();
+	// 	console.log("the Segment (anonymous) user id is: " + user.anonymousId())
+
+	// 	var traits = user.traits();
+	// 	// console.log("the Segment user's traits are: ")
+	// 	// console.dir(traits)
+	// })
+
+analytics.identify('1234554321', {
+  name: 'Peter Gibbons',
+  title: 'VP of Derp',
+  email: 'peter.gibbons@initech.com',
+  company: {id: 666, name: 'Initech'},
+  phone: '570-690-4150',
+  state: 'California',
+  rating: 'Hot',
+  address: {
+    city: 'east greenwich',
+    postalCode: '94115',
+    country: 'USA',
+    street: '19123 forest lane',
+    state: 'RI'
+  }
+}, { 
+  'integrations':{
+    'Salesforce': true
+  }
+});
+
+
+		      		// $.post('/setSession', {"idToken": res.idToken}, function(data) {
+		      		// 	console.log("after trying to set the session, the result is: " + data.result)
+
+          //           }, "json")
+
+
+				localStorage.setItem("userID", res.claims.sub)
+				localStorage.setItem("name", res.claims.given_name + " " + res.claims.family_name)
+				localStorage.setItem("email", res.claims.preferred_username)
+
+						// analytics.identify(
+						// 	'1234554321',
+						// 	{
+						// 		name: 'Peter Gibbons',
+						// 		title: 'VP of Derp',
+						// 		email: 'peter.gibbons@initech.com',
+						// 		company: {id: 666, name: 'Initech'},
+						// 		phone: '570-690-4150',
+						// 		state: 'California',
+						// 		rating: 'Hot',
+						// 		address: {
+						// 			city: 'east greenwich',
+						// 			postalCode: '94115',
+						// 			country: 'USA',
+						// 			street: '19123 forest lane',
+						// 			state: 'RI'
+						// 		}
+						// 	},
+						// 	{
+						// 		'integrations': {
+						// 			'Salesforce': true
+						// 		}
+						// 	}
+						// )

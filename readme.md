@@ -121,105 +121,143 @@ var oktaSignIn = new OktaSignIn({
 
 window.onload = function() {
 
-	// SEGMENT: Register this page view with Segment to get the engine running
-	analytics.page("Tom's Okta+Segment home page")
-
-	// SEGMENT: Display the anonymous id and known user id
-	var user = analytics.user();
-	var id = user.id();
-	console.log("The Segment (anonymous) user id is: " + user.anonymousId())
-	console.log("The Okta user id (from Segment) is: " + id)
-
 	$("#okta-container").hide()
 	localStorage.setItem("reg_state", "none")
 
 	oktaSignIn.session.get(function (res) {
-		// Okta Session exists, show logged in state.
+		// Session exists, show logged in state.
 		if (res.status === 'ACTIVE') {
-			console.log("There is an Okta session")
+			console.log("there is an okta session")
 
 			console.dir(res)
 
-			setWelcome(res.login, false)
+			setWelcome(res.login)
 
-			// SEGMENT: Associate this page view with the user's Okta ID
-			// also send name and email (maybe not necessary?)
 			analytics.identify(
-				res.userId,
+				localStorage.userID,
 				{
-					email: res.login // This is a hack; email is not always = login
-				}
-			)
-		}
-
-		// No session, or error retrieving the session. Render the Sign-In Widget.
-		else if (res.status === 'INACTIVE') {
-			oktaSignIn.renderEl(
-				{el: '#okta-login-container'},
-				function success(res) {
-					if (res.status === "SUCCESS") {
-
-						console.log("The Okta user " + res.claims.preferred_username + " has successfully signed in.")
-
-						if (localStorage.getItem("reg_state") === "new_reg") {
-							console.log("Hey, this is a new registration!")
-							localStorage.setItem("reg_state", "none")
-							setWelcome(res.claims.given_name, true)
-						}
-						else {
-							console.log("This was a simple authentication event (not a registration)")
-							console.log("The user's claims are:")
-							console.dir(res.claims)
-							setWelcome(res.claims.given_name, false)
-						}
-
-						oktaSignIn.hide()
-						$("#okta-container").hide()
-
-						console.log("The id_token is: " + res.idToken)
-						console.log("The full result object is: ")
-						console.dir(res)
-
-						analytics.identify(
-							res.claims.sub,
-							{
-								name: res.claims.name,
-								title: 'Solutions Architect',
-								email: res.claims.email,
-								company: {id: 567, name: 'Initech'},
-								phone: '570-690-4150',
-								state: 'California',
-								rating: 'Hot',
-								address: {
-									city: 'east greenwich',
-									postalCode: '94115',
-									country: 'USA',
-									street: '19123 forest lane',
-									state: 'RI'
-								}
-							},
-							{
-								'integrations': {
-									'Salesforce': true
-								}
-							}
-						)
-					}
+					name: localStorage.name,
+					email: localStorage.email
 				},
-				function error(err) {
-					console.log("there was an error: " + err)
-					// handleError(err)
+				{
+					integrations: {
+						'Salesforce': true
 				}
-			)
+			})
+
+analytics.identify('1234554321', {
+  name: 'Peter Gibbons',
+  title: 'VP of Derp',
+  email: 'peter.gibbons@initech.com',
+  company: {id: 666, name: 'Initech'},
+  phone: '570-690-4150',
+  state: 'California',
+  rating: 'Hot',
+  address: {
+    city: 'east greenwich',
+    postalCode: '94115',
+    country: 'USA',
+    street: '19123 forest lane',
+    state: 'RI'
+  }
+}, { 
+  'integrations':{
+    'Salesforce': true
+  }
+});
+
 		}
+	  // No session, or error retrieving the session. Render the Sign-In Widget.
+	  else if (res.status === 'INACTIVE') {
+	    oktaSignIn.renderEl(
+	      {el: '#okta-login-container'},
+	      function success(res) {
+	      	if (res.status === "SUCCESS") {
+	      		console.log("success!!")
+		      	console.log("the status is: " + res.claims)
+		      	console.dir(res.claims)
+		      	oktaSignIn.hide()
+		      	$("#okta-container").hide()
+
+
+		      	if (localStorage.getItem("reg_state") === "new_reg") {
+		      		console.log("this is a new registration.")
+		      		localStorage.setItem("reg_state", "none")
+
+		      		// $.post('/setSession', {"idToken": res.idToken}, function(data) {
+		      		// 	console.log("after trying to set the session, the result is: " + data.result)
+
+          //           }, "json")
+				}
+				// localStorage.setItem("given_name", res.claims.given_name)
+
+				console.log("the id_token is: " + res.idToken)
+				console.dir(res)
+
+				setWelcome(res.claims.given_name)
+
+				localStorage.setItem("userID", res.claims.sub)
+				localStorage.setItem("name", res.claims.given_name + " " + res.claims.family_name)
+				localStorage.setItem("email", res.claims.preferred_username)
+
+				// analytics.identify(res.claims.sub, {
+				// 	name: res.claims.given_name + " " + res.claims.family_name,
+				// 	email: res.claims.preferred_username
+				// })
+
+				// analytics.identify(localStorage.userID, {
+				// 	name: localStorage.name,
+				// 	email: localStorage.email
+				// })
+				// analytics.identify(
+				// 	localStorage.userID,
+				// 	{
+				// 		name: localStorage.name,
+				// 		email: localStorage.email
+				// 	},
+				// 	{ 
+				// 		integrations: {
+				// 			'Salesforce': true
+				// 	}
+				// })
+
+analytics.identify('1234554321', {
+  name: 'Peter Gibbons',
+  title: 'VP of Derp',
+  email: 'peter.gibbons@initech.com',
+  company: {id: 666, name: 'Initech'},
+  phone: '570-690-4150',
+  state: 'California',
+  rating: 'Hot',
+  address: {
+    city: 'east greenwich',
+    postalCode: '94115',
+    country: 'USA',
+    street: '19123 forest lane',
+    state: 'RI'
+  }
+}, { 
+  'integrations':{
+    'Salesforce': true
+  }
+});
+
+
+			}
+		},
+	      function error(err) {
+	      	console.log("there was an error: " + err)
+	        // handleError(err)
+	      }
+	    )
+	  }
 	})
 }
 
-function setWelcome(given_name, is_new_reg) {
+function setWelcome(given_name) {
 
-	var msg = "<h4>Welcome "
-	if (!(is_new_reg)) { msg += "back " }
-	msg += "to Consumer Bank, " + given_name + "!</h4>"
+// alert("hi user!!")
+	var msg = "<h4>Welcome to Consumer Bank, " + given_name + "!</h4>"
 	msg += "<p>To start your line of credit, you can stop by one of our branches.</p>"
 	msg += "<p>Or, you can get a $500 line of credit immediately by clicking <a href = 'dlduplexfacialmatch.htm'>here</a>.</p>"
 
@@ -259,12 +297,36 @@ function signOut() {
 ================================================== -->
 <body>
 
+
 	<div class = "bg">
 	  <div id = "transparentDiv">
 
 		<div class="navbar-wrapper">
 		  <div class="container">
 
+<!-- 	        <nav class="navbar navbar-inverse navbar-static-top">
+			  <div class="container">
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand" href="#">Solar System API</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+				  <ul class="nav navbar-nav">
+					<li class="active"><a href="#">Home</a></li>
+					<li id = "loginLink"><a href="#" onclick="event.preventDefault(); renderWidget()">Log in</a></li>
+					<li id = "registerLink"><a href="#" onclick="event.preventDefault(); register()">Register</a></li>
+					<li id = "signoutLink"><a href="#" onclick="event.preventDefault(); signOut()" id="signout">Sign out</a></li>
+					<li><a href="#" target = "_blank">Github</a></li>
+				  </ul>
+				</div>
+			  </div>
+			</nav>
+ -->	
 	 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
 	  <a class="navbar-brand" href="#">Consumer Bank</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
