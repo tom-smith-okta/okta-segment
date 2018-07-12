@@ -73,7 +73,7 @@
 
 <script src="https://ok1static.oktacdn.com/assets/js/sdk/okta-auth-js/1.8.0/okta-auth-js.min.js" type="text/javascript"></script>
 
-<script src="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.6.0/js/okta-sign-in.min.js" type="text/javascript"></script>
+<script src="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.9.0/js/okta-sign-in.min.js" type="text/javascript"></script>
 
 <!-- JQUERY -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
@@ -180,8 +180,13 @@ window.onload = function() {
 						console.log("The full result object is: ")
 						console.dir(res)
 
+						// SEGMENT: Send this event to Salesforce (create a lead)
+						// in prod you would send the Okta user id res.claims.sub
+						// instead of res.claims.email
+						// but for demo purposes it's a lot easier to understand who the user is
+						// when you use res.claims.email
 						analytics.identify(
-							res.claims.sub,
+							res.claims.email,
 							{
 								name: res.claims.name,
 								title: 'Solutions Architect',
