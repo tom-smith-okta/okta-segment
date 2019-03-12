@@ -2,96 +2,242 @@
 <html lang="en">
   <head>
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<meta name="description" content="">
-	<meta name="author" content="">
 
-	<title>Okta + Segment integration</title>
+	<title>Okta + Segment.io integration</title>
+
+	<link rel="shortcut icon" href="https://www.okta.com/sites/all/themes/developer/favicon.ico" type="image/vnd.microsoft.icon" />
 
 	<!-- CSS -->
 
-	<!-- BOOTSTRAP CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!-- BOOTSTRAP CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
-	<link href="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.6.0/css/okta-sign-in.min.css" type="text/css" rel="stylesheet">
+<link href="https://getbootstrap.com/docs/4.2/examples/starter-template/starter-template.css" rel="stylesheet" type="text/css">
 
-	<style>
+<link
+  href="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.14.0/css/okta-sign-in.min.css"
+  type="text/css"
+  rel="stylesheet"/>
 
-		body {
-			padding-top: 3rem;
-		
-/*			padding-top: 1px;
-*/		}
+<style>
 
-		#userMsg {
-			margin-top: 5px;
-		}
-		.starter-template {
-			padding: 3rem 1.5rem;
-			text-align: center;
-		}
+	body {
+		padding-top: 3rem;
+	}
 
-		body, html {
-			height: 100%;
-		}
+	#userMsg {
+		margin-top: 5px;
+	}
+	.starter-template {
+		padding: 3rem 1.5rem;
+		text-align: center;
+	}
 
-		.bg { 
-			background-image: url("https://s3.amazonaws.com/tom-smith-okta-demo-images/coffeShop.png");
+	body, html {
+		height: 100%;
+	}
 
-			height: 75%; 
+	.bg { 
+		background-image: url("https://s3.amazonaws.com/tom-smith-okta-demo-images/coffeShop.png");
 
-			/* Center and scale the image nicely */
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: cover;
-		}
+		height: 75%; 
 
-		#transparentDiv {
-			background: rgba(255,255,255,.6);
-			height: 100%;
-		}
+		/* Center and scale the image nicely */
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 
-		#signoutDiv, #signoutLink {
-			display: none;
-		}
+	#transparentDiv {
+		background: rgba(255,255,255,.6);
+		height: 100%;
+	}
 
-	</style>
+	#signoutDiv, #signoutLink {
+		display: none;
+	}
+
+</style>
 
 <!-- ********** JAVASCRIPT ***************** -->
 
 <!-- SEGMENT.IO -->
-<script type="text/javascript">
-	!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var o=document.getElementsByTagName("script")[0];o.parentNode.insertBefore(n,o);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
-	analytics.load("tR8O4O9BeNdSi78OePN6sH45IgASSieh");
-	analytics.page();
-	}}();
-</script>
 
+<script>
+  !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t,e){var n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src="https://cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(n,a);analytics._loadOptions=e};analytics.SNIPPET_VERSION="4.1.0";
+  analytics.load("tR8O4O9BeNdSi78OePN6sH45IgASSieh");
+  analytics.page();
+  }}();
+</script>
 <!-- OKTA AUTHN WIDGET -->
 
-<script src="https://ok1static.oktacdn.com/assets/js/sdk/okta-auth-js/1.8.0/okta-auth-js.min.js" type="text/javascript"></script>
+<!-- javascript -->
 
-<script src="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.9.0/js/okta-sign-in.min.js" type="text/javascript"></script>
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<!-- JQUERY -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<!-- bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- BOOTSTRAP JS-->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- okta login widget -->
+<script
+  src="https://ok1static.oktacdn.com/assets/js/sdk/okta-signin-widget/2.14.0/js/okta-sign-in.min.js"
+  type="text/javascript"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
 <script>
 
-var oktaSignIn = new OktaSignIn({
+window.onload = function() {
+
+	// SEGMENT: Register this page view with Segment to get the engine running
+	analytics.page("Tom's Okta+Segment home page")
+
+	// SEGMENT: Display the anonymous id and known user id
+	var user = analytics.user()
+
+	// var id = user.id()
+
+	console.log("The Segment (anonymous) user id is: " + user.anonymousId())
+
+}
+
+</script>
+
+<script>
+
+function update_ui_logged_in(user_obj) {
+
+	$("#welcome").show()
+
+	$("#log_out").show()
+
+	$("#un").html(user_obj.claims.given_name)
+
+console.log("the user object is: ")
+
+console.dir(user_obj)
+	// SEGMENT: Send this event to Segment.io
+	// create/update a lead in Salesforce
+
+	// in this example, most of the values are hard-coded
+	// but any could be pulled from the okta id token if
+	// they are stored in the okta user profile
+
+	analytics.identify(
+		user_obj.claims.email,
+		{
+			name: user_obj.claims.given_name + " " + user_obj.claims.family_name,
+			title: 'Solutions Architect',
+			email: user_obj.claims.email,
+			company: {id: 567, name: 'Initech'},
+			phone: '570-690-4150',
+			state: 'California',
+			rating: 'Hot',
+			address: {
+				city: 'east greenwich',
+				postalCode: '94115',
+				country: 'USA',
+				street: '19123 forest lane',
+				state: 'RI'
+			}
+		},
+		{
+			'integrations': {
+				'Salesforce': true
+			}
+		}
+	)
+}
+
+function update_ui_logged_out() {
+
+	$("#authn").show()
+
+	$("#id_proof_instrux").hide()
+
+	$("#welcome").hide()
+}
+
+</script>
+
+</head>
+
+<body>
+
+	<div class = "bg">
+
+		<div id = "transparentDiv">
+
+			<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+				<a class="navbar-brand" href="#">Consumer Bank</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+					<ul class="navbar-nav mr-auto">
+
+						<li class="nav-item active">
+							<a class="nav-link" href="#" onclick="log_out()" style="display:none" id="log_out">Log out</span></a>
+						</li>
+
+						<li class="nav-item active">
+							<a class="nav-link" href="/log_in" style="display:none" id="log_in">Log in</span></a>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+
+			<div class="container">
+				<div class="row">
+					<div class="col-sm">
+						<div class="card" style="background: rgba(255,255,255,.7); margin-top: 20px">
+							<div class="card-body" id ="ui">
+								<h3>Welcome</h3>
+								<p>Thank you for choosing us for your banking needs.<p>
+
+								<div id = "welcome" style = "display: none">
+									<p>It's great to have you here, <span id="un" style="background: yellow"></span>!</p>
+								</div>
+
+								<div id = "authn" style = "display: none">
+									<p>Please sign in to get started.</p>
+
+									<p>Or, if this is your first time visiting us, please click on the "Sign up" link below to create an account.</p>
+
+									<div id = "widget-container"></div>
+								</div>
+
+							</div>
+
+							<div id = "okta-container" style="display:none">
+								<div id="okta-login-container"></div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+<script>
+
+// OKTA WIDGET FUNCTIONS /////////////////////////////////////////////////
+var signIn = new OktaSignIn({
 	baseUrl: '{{OKTA_TENANT}}',
 	clientId: '{{OKTA_CLIENT_ID}}',
-	redirectUri: '{{OKTA_REDIRECT_URI}}',
+	redirectUri: '{{REDIRECT_URI}}',
 
 	authParams: {
-		scopes: ['openid', 'email', 'profile', 'address', 'phone']
+		responseType: 'id_token',
+		scopes: ['openid', 'email', 'profile', 'address', 'phone'],
+		display: 'page'
 	},
 
 	registration: {
@@ -107,277 +253,84 @@ var oktaSignIn = new OktaSignIn({
 			// handle postsubmit callback
 
 			onSuccess(response)
-
-			localStorage.setItem("reg_state", "new_reg")
-
 		}
 	},
 	features: {
-		// Used to enable registration feature on the widget.
-		// https://github.com/okta/okta-signin-widget#feature-flags
-		registration: true // REQUIRED
+		registration: true
 	}
 })
 
-window.onload = function() {
+// First, check to see if we have any tokens in the url
+if (signIn.token.hasTokensInUrl()) {
+	console.log("found at least one token in the url.")
 
-	// SEGMENT: Register this page view with Segment to get the engine running
-	analytics.page("Tom's Okta+Segment home page")
+	signIn.token.parseTokensFromUrl(
+		function success(res) {
+			signIn.tokenManager.add('id_token', res)
 
-	// SEGMENT: Display the anonymous id and known user id
-	var user = analytics.user();
-	var id = user.id();
-	console.log("The Segment (anonymous) user id is: " + user.anonymousId())
-	console.log("The Okta user id (from Segment) is: " + id)
-
-	$("#okta-container").hide()
-	localStorage.setItem("reg_state", "none")
-
-	oktaSignIn.session.get(function (res) {
-		// Okta Session exists, show logged in state.
-		if (res.status === 'ACTIVE') {
-			console.log("There is an Okta session")
-
-			console.dir(res)
-
-			setWelcome(res.login, false)
-
-			// SEGMENT: Associate this page view with the user's Okta ID
-			// also send name and email (maybe not necessary?)
-			analytics.identify(
-				res.userId,
-				{
-					email: res.login // This is a hack; email is not always = login
-				}
-			)
+			location.replace('{{REDIRECT_URI}}')
+		},
+		function error(err) {
+			console.dir(err)
 		}
+	)
+}
+else {
+	console.log("no id token in the url.")
 
-		// No session, or error retrieving the session. Render the Sign-In Widget.
-		else if (res.status === 'INACTIVE') {
-			oktaSignIn.renderEl(
-				{el: '#okta-login-container'},
-				function success(res) {
-					if (res.status === "SUCCESS") {
-
-						console.log("The Okta user " + res.claims.preferred_username + " has successfully signed in.")
-
-						if (localStorage.getItem("reg_state") === "new_reg") {
-							console.log("Hey, this is a new registration!")
-							localStorage.setItem("reg_state", "none")
-							setWelcome(res.claims.given_name, true)
-						}
-						else {
-							console.log("This was a simple authentication event (not a registration)")
-							console.log("The user's claims are:")
-							console.dir(res.claims)
-							setWelcome(res.claims.given_name, false)
-						}
-
-						oktaSignIn.hide()
-						$("#okta-container").hide()
-
-						console.log("The id_token is: " + res.idToken)
-						console.log("The full result object is: ")
-						console.dir(res)
-
-						// SEGMENT: Send this event to Salesforce (create a lead)
-						// in prod you would send the Okta user id res.claims.sub
-						// instead of res.claims.email
-						// but for demo purposes it's a lot easier to understand who the user is
-						// when you use res.claims.email
-						analytics.identify(
-							res.claims.email,
-							{
-								name: res.claims.name,
-								title: 'Solutions Architect',
-								email: res.claims.email,
-								company: {id: 567, name: 'Initech'},
-								phone: '570-690-4150',
-								state: 'California',
-								rating: 'Hot',
-								address: {
-									city: 'east greenwich',
-									postalCode: '94115',
-									country: 'USA',
-									street: '19123 forest lane',
-									state: 'RI'
-								}
-							},
-							{
-								'integrations': {
-									'Salesforce': true
-								}
-							}
-						)
-					}
-				},
-				function error(err) {
-					console.log("there was an error: " + err)
-					// handleError(err)
-				}
-			)
-		}
+	signIn.tokenManager.on('expired', function (key, expiredToken) {
+		console.log('Token with key', key, ' has expired:')
+		console.log(expiredToken)
+		signIn.tokenManager.remove('key')
 	})
+
+	if (signIn.tokenManager.get('id_token')) {
+
+		var obj = signIn.tokenManager.get('id_token')
+
+		console.log("there is an id token in the token manager")
+
+		console.log(obj.idToken)
+
+		console.dir(obj)
+
+		update_ui_logged_in(obj)
+	}
+	else {
+		console.log("no id token in the okta token manager.")
+
+		update_ui_logged_out()
+
+		signIn.renderEl(
+			{el: '#widget-container'},
+			function success(res) {
+				if (res.status === "SUCCESS") {
+					res.session.setCookieAndRedirect('{{REDIRECT_URI}}')
+				}
+			},
+			function(err) { console.dir(err)}
+		)
+	}
 }
 
-function setWelcome(given_name, is_new_reg) {
+function log_out() {
+	localStorage.clear()
 
-	var msg = "<h4>Welcome "
-	if (!(is_new_reg)) { msg += "back " }
-	msg += "to Consumer Bank, " + given_name + "!</h4>"
-	msg += "<p>To start your line of credit, you can stop by one of our branches.</p>"
-	msg += "<p>Or, you can get a $500 line of credit immediately by clicking <a href = 'dlduplexfacialmatch.htm'>here</a>.</p>"
+	sessionStorage.clear()
 
-	$("#userMsg").html(msg)
-	$("#loginLink").hide()
-	$("#signoutLink").show()
+	signIn.tokenManager.clear()
 
-}
-
-function showWidget() {
-	$("#userMsg").html("")
-	$("#okta-container").show()
-
-	oktaSignIn.show()
-}
-
-</script>
-
-<script>
-
-function signOut() {
-	oktaSignIn.session.close(function (err) {
+	signIn.session.close(function (err) {
 		if (err) {
 			// The user has not been logged out, perform some error handling here.
-			return
+			return;
 		}
-		location.reload(true)
+		location.replace('{{REDIRECT_URI}}')
 	})
 }
 
 </script>
 
-</head>
 
-
-<!-- NAVBAR
-================================================== -->
-<body>
-
-	<div class = "bg">
-	  <div id = "transparentDiv">
-
-		<div class="navbar-wrapper">
-		  <div class="container">
-
-	 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-	  <a class="navbar-brand" href="#">Consumer Bank</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	  </button>
-
-		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item" id = "signoutLink">
-					<a class="nav-link" href="#" id="signout" onclick="event.preventDefault(); signOut()">Sign out</a>
-				</li>
-
-				<li class="nav-item" id = "loginLink">
-					<a class="nav-link" href="#" onclick="event.preventDefault(); showWidget()">Sign In / Sign Up</a>
-				</li>
-
-			</ul>
-		</div>
-	</nav>
-
-<div class="container">
-  <div class="row">
-	<div class="col-sm">
-		<div class="card" style="background: rgba(255,255,255,.7); margin-top: 20px">
-			<div class="card-body" id ="ui">
-				<div id = "userMsg">
-					<h3>Welcome</h3>
-					<p>Thank you for choosing us for your banking needs.<p>
-					<p>You can begin the application process by clicking <a href="#" onclick="event.preventDefault(); showWidget()">"Sign In / Sign Up"</a></p>
-				</div>
-
-				<div id = "okta-container">
-					<div id="okta-login-container"></div>
-				</div>
-
-			</div>
-		</div>
-	</div>
-  </div>
-</div>
-
-		  </div>
-		</div>
-	  </div>
-	</div>
-
-	<!-- Marketing messaging and featurettes
-	================================================== -->
-	<!-- Wrap the rest of the page in another container to center all the content. -->
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-	<!-- Modal content-->
-	<div class="modal-content">
-	  <div class="modal-header" style="text-align: center;">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-		<table border = 0 width = "100%">
-			<tr>
-				<td><img src = "https://s3.amazonaws.com/tom-smith-okta-demo-images/Resources_BoxPlatform400.jpg" width = "250"></td>
-				<td><img src = "https://s3.amazonaws.com/tom-smith-okta-demo-images/oktaLogo.png" width="175"></td>
-			</tr>
-		</table>
-		
-		<h4 class="modal-title" style="margin-top: 10px" id="modal-title-element"></h4>
-	  </div>
-	  <div class="modal-body" id="ui">
-
-	  </div>
-	  <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	  </div>
-	</div>
-
-  </div>
-</div>
-
-<!--       <div class="row featurette">
-		<div class="col-md-7">
-		  <h2 class="featurette-heading">Great Projects start with you.</h2>
-		</div>
-	  </div>
- -->
-
-	<div class="container marketing">
-
-	  <!-- START THE FEATURETTES -->
-
-	  <hr class="featurette-divider">
-
-<!--       <div class="row featurette">
-		<div class="col-md-7">
-		  <h2 class="featurette-heading">Great Projects start with you.</h2>
-		</div>
-	  </div> -->
-
-	  <!-- /END THE FEATURETTES -->
-
-	  <!-- FOOTER -->
-<!--       <footer>
-		<p>&copy; Big Project, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-	  </footer>
- -->
-	</div><!-- /.container -->
-
-  </body>
+</body>
 </html>
